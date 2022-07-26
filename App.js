@@ -18,8 +18,8 @@ import {
   View,
   Image,
   Button,
+  NativeModules,
 } from 'react-native';
-import RNShake from 'react-native-shake';
 import {
   Colors,
   DebugInstructions,
@@ -28,9 +28,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => Node = () => {
-  const [img, setImg] = React.useState();
+import RNShake from 'react-native-shake-viewshot/lib';
 
+const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -41,28 +41,18 @@ const App: () => Node = () => {
     const subscription = RNShake.addListener(data => {
       //Sau khi shake se tra ve hinh anh chup
       console.log('uri', data);
-      setImg(data);
     });
-
     return () => {
       subscription.remove();
     };
   }, []);
 
-  return ( 
+  return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Image resizeMode='cover'
-          style={styles.imageStyle}
-          source={{
-            uri: img, 
-          }}
-        />
-        {!img && <Text>Shake Device to get Image</Text>}
-      </ScrollView>
+      <View contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
+        <Text>Shake Device to get Image</Text>
+      </View>
     </SafeAreaView>
   );
 };
